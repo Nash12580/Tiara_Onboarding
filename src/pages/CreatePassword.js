@@ -1,10 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import {Box, Card, CardContent, TextField, Button, Typography, LinearProgress, Checkbox, FormControlLabel, IconButton} from '@mui/material';
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {useNavigate} from 'react-router-dom';
 
 const CreatePassword = () =>{
     const navigate = useNavigate();
+    const [password, setPassword] = React.useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [isChecked, setIsChecked] = useState(false);
+    const [passwordError, setPasswordError] = useState("");
+    const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
+    const validatePassword = (pwd) => {
+        const strongPwdRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-za-z\d@$!%*?&]{8,}$/;
+        return strongPwdRegex.test(pwd);
+    };
+
+    const handlePasswordChange = (event) => {
+        const newPassword = event.target.value;
+        setPassword(newPassword);
+        setPasswordError(validatePassword(newPassword)? '' : 'Password must be at least 8 characters long and include a number.');
+    };
+
+    const handleConfirmPasswordChange = (event) => {
+        const newConfirmPassword = event.target.value;
+        setConfirmPassword(newConfirmPassword);
+        setConfirmPasswordError(newConfirmPassword === password? '' : 'Passwords do not match.');
+    };
+
+    const isFormValid = password && confirmPassword && password === confirmPassword && isChecked && validatePassword(password);
 
     return(
         <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center',
@@ -15,9 +39,6 @@ const CreatePassword = () =>{
                         onClick={() => navigate("/signup/email")}>
                         <ArrowBackIcon sx={{color:'#C13E8F', cursor:'pointer'}}/>
                     </IconButton>
-                    <Box sx={{width: '200px', marginRight:'200px'}}>
-                        <LinearProgress variant="determinate" value={30} sx={{height:4, borderRadius: 4, backgroundColor:'rgba(147, 47, 109, 0.6)', '& .MuiLinearProgress-bar':{backgroundColor: '#932F6D'}}}/>
-                    </Box>
                 </Box>
 
                 <CardContent sx={{textAlign:'center', width:'100%', alignSelf:'center'}}>
@@ -25,26 +46,31 @@ const CreatePassword = () =>{
                 </CardContent>
 
                 <Box sx={{marginBottom: 2}}>
-                    <TextField fullWidth label = "Password" type = "password" variant = "outlined"
+                    <TextField fullWidth label = "Password" type = "password" variant = "outlined" value={password} onChange={handlePasswordChange}
+                        error={!!passwordError} helperText={passwordError}
                         sx={{marginBottom: 2,'& label.Mui-focused': {color: '#932F6D'}, '& .MuiOutlinedInput-root': {
                                 '& fieldset': {borderColor: '#932F6D', borderRadius:"12px", borderWidth:2},
                                 '&:hover fieldset': {borderColor: '#E09EC7'},
                                 '&.Mui-focused fieldset': {borderColor: '#932F6D'}}
                             }}/>
-                    <TextField fullWidth label = "Confirm Password" type="password" variant = "outlined"
+                    <TextField fullWidth label = "Confirm Password" type="password" variant = "outlined" value={confirmPassword}
+                        onChange={handleConfirmPasswordChange} error={!!confirmPasswordError} helperText={confirmPasswordError}
                         sx={{marginBottom: 2,  '& label.Mui-focused': {color: '#932F6D',}, '& .MuiOutlinedInput-root': {
                             '& fieldset': {borderColor: '#932F6D', borderRadius:"12px", borderWidth:2},
                             '&:hover fieldset': {borderColor: '#E09EC7'},
                             '&.Mui-focused fieldset': {borderColor: '#932F6D'}}
                         }}/>
+
+                    <FormControlLabel control={<Checkbox checked={isChecked} 
+                        onChange={(e) => setIsChecked(e.target.checked)} sx={{ color: '#932F6D', '&.Mui-checked':{color: '#932F6D'}}} />} label="I accept the Terms and Conditions" sx={{ marginBottom: 2}}/>
                     
                     <Button fullWidth variant="contained" color="primary" sx={{marginTop:2, borderRadius:2, textAlign:'center', display:'block', backgroundColor: '#932F6D', '&:hover':{backgroundColor: '#591C42'}}}
-                        onClick={() => navigate("/signup/about")}>
+                        disabled={!isFormValid} onClick={() => navigate("/signup/about")}>
                         Sign In
                     </Button>
                 </Box>
 
-                <FormControlLabel control={<Checkbox sx={{ color: '#932F6D', '&.Mui-checked':{color: '#932F6D'}}} />} label="I accept the Terms and Conditions" sx={{ marginBottom: 3 }}/>
+                
             </Card>
         </Box>
     )

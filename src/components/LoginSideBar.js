@@ -17,7 +17,7 @@ function LoginSideBar() {
         <img
           src="\Tiara_logo.png"
           alt="logo_MiTiara"
-          style={{ filter: "brightness(0) invert(1)", width: "60%" }}
+          style={{ filter: "brightness(0) invert(1)", width: "50%" }}
         />
         <Typography fontSize={'45px'}>
           Transforming Your Plans into Celebrations!

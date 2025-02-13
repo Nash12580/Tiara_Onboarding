@@ -47,9 +47,9 @@ function LoginForm() {
         className="parent_div"
         style={{
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "right",
           alignItems: "center",
-          width: "70%",
+          width: "600px",
           height: "100vh",
         }}
       >
