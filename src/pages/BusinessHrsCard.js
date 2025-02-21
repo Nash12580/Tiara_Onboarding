@@ -15,9 +15,7 @@ const BusinessHrs = () =>{
                         <IconButton sx={{color: "#C13E8F",  "&:hover": {boxShadow: "0 0 0 5px rgba(193, 62, 143, 0.2)", transform: "scale(1.05)" }}} 
                             onClick={() => navigate("/signup/location")}>
                             <ArrowBackIcon/>
-                        </IconButton>
-
-                       
+                        </IconButton>                       
                     </Box>
 
                     <CardContent sx={{textAlign:'center', mb:2}}>
